@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.myfirstcode.FirstActivity"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Button
+                android:text="www.baidu.com"
+                style="@style/button_style"
+                android:id="@+id/baidu">
+
+            </Button>
+
+
+
+            <Button
+                android:text="跳转到SecondActivity"
+                style="@style/ButtonStyle"
+                android:id="@+id/button2">
+
+            </Button>
+
+
+            <Button
+                android:text="打开普通activity"
+                style="@style/ButtonStyle"
+                android:id="@+id/openNomal">
+
+            </Button>
+
+
+
+            <Button
+                android:text="打开对话框"
+                style="@style/ButtonStyle"
+                android:id="@+id/opendialog">
+
+            </Button>
+
+
+            <Button
+                android:text="加载"
+                style="@style/ButtonStyle"
+                android:id="@+id/button_progress_bar">
+
+            </Button>
+
+            <Button
+                android:text="消息界面"
+                style="@style/ButtonStyle"
+                android:id="@+id/button_message">
+
+            </Button>
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:id="@+id/progress_bar"
+                android:visibility="gone">
+
+            </ProgressBar>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

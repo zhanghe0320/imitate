@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="imitate.project.activity.databinding.model.UserInfo" />
+        <!-- 零个或多个import元素可能在data元素中使用-->
+        <import type="android.view.View" />
+        <!--表达式中使用static属性和方法-->
+        <import type="imitate.project.activity.databinding.utils.StringUtils" />
+
+        <!--表达式中使用static属性和方法-->
+        <import type="android.text.TextUtils" />
+        <variable
+            name="userInfo"
+            type="UserInfo" />
+
+        <variable
+            name="onClickMeListener"
+            type="View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            style="@style/ButtonStyle"
+            android:onClick="@{onClickMeListener}"
+            android:text="点我看看" />
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@{StringUtils.capitalize(userInfo.userName)}" />
+
+        <TextView
+            android:id="@+id/tv_show_view"
+            style="@style/TextViewStyle"
+            android:text="显示与隐藏"
+            android:visibility="@{userInfo.adult?View.VISIBLE:View.GONE}" />
+
+        <!-- data Bind Includes-->
+        <include
+            layout="@layout/include_layout_user_dutiy"
+            bind:userInfo="@{userInfo}" />
+    </LinearLayout>
+</layout>

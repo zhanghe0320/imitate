@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="employeeInfo"
+            type="imitate.project.activity.databinding.model.EmployeeInfo" />
+
+        <variable
+            name="editPresenter"
+            type="imitate.project.activity.databinding.presenter.EditPresenter" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <!--<CheckBox-->
+            <!--android:id="@+id/checkbox_avatar1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical" />-->
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="员工头像：" />
+
+            <ImageView
+                android:id="@+id/avatar2"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="centerCrop"
+                android:visibility="@{employeeInfo.isFired?View.VISIBLE:View.GONE}"
+                app:imageUrl="@{employeeInfo.avatar}" />
+        </LinearLayout>
+
+        <!--<ImageView-->
+        <!--android:id="@+id/avatar1"-->
+        <!--android:layout_width="65dp"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:visibility="@{checkbox_avatar1.checked?View.VISIBLE:View.GONE}"-->
+        <!--app:imageUrl="@{employeeInfo.avatar}" />-->
+
+        <!-- 双向绑定方式一 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{avatar2.visibility}">
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="员工名字：" />
+
+            <EditText
+                style="@style/TextViewStyle"
+                android:afterTextChanged="@{editPresenter::afterTextChanged}"
+                android:text="@{employeeInfo.name}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="员工描述：" />
+
+            <EditText
+                style="@style/TextViewStyle"
+                android:text="@={employeeInfo.desc}" />
+        </LinearLayout>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:text="@{employeeInfo.desc}" />
+    </LinearLayout>
+</layout>

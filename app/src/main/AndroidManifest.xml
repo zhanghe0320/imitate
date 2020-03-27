@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="imitate.project">
+    <!-- 权限引入信息 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 摄像头权限 -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- IMSDK 权限 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_config"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 83765f4... 增加说明
+=======
+        <activity android:name=".activity.myfirstcode.msg.MessageActivity"></activity>
+=======
+        <activity android:name=".activity.myfirstcode.fragment.FragmentActivity"></activity>
+        <activity android:name=".activity.myfirstcode.msg.MessageActivity" />
+>>>>>>> 38ea936... tianji
+        <activity
+            android:name=".activity.myfirstcode.DialogActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+>>>>>>> 2eccab0... xiao
+
+            <!--
+             唯一一次启动方式
+             android:launchMode="singleTask"  //同一个栈堆，使用方式 全局只启动一次
+             singleInstance // 产生新的栈堆，相当将新启动的activity 单独放在一个栈中
+             singleTop   //位于栈堆顶部的时候不会多次启动
+             standard    //标准启动模式   栈堆内activity会启动多次
+            -->
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.myfirstcode.NormalActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.myfirstcode.ThirdActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.myfirstcode.SecondActivity">
+            <intent-filter>
+
+                <!-- 隐式intent对应大的方法 -->
+                <action android:name="imitate.project..activity.myfirstcode.Action_start" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- 隐式intent -->
+                <category android:name="imitate.project..activity.myfirstcode.MY_CATEGROY" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.myfirstcode.FirstActivity" />
+<<<<<<< HEAD
+
+<<<<<<< HEAD
+=======
+>>>>>>> 2eccab0... xiao
+        <activity android:name=".activity.databinding.BindingActivity" /> <!-- 自适信息   长 宽 标识 -->
+=======
+        <activity android:name=".activity.databinding.BindingActivity"></activity>
+        <!-- 自适信息   长 宽 标识 -->
+>>>>>>> 3fef1f0... 增加说明
+=======
+=======
+>>>>>>> 83765f4... 增加说明
+        <activity android:name=".activity.databinding.BindingActivity" /> <!-- 自适信息   长 宽 标识 -->
+>>>>>>> 9e27b5b... 增加说明
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="720" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="1080" />
+
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+                <!-- 首页启动 -->
+=======
+>>>>>>> 3fef1f0... 增加说明
+=======
+
+                <!-- 首页启动 -->
+>>>>>>> 83765f4... 增加说明
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.file.FileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MvcActivity"
+            android:screenOrientation="portrait" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <activity
+            android:name=".activity.databinding.ui.Main2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindSimpleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindThoroughActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindObservableActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindSeniorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindTwoWayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindLambdaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindAnimationActivity"
+            android:screenOrientation="portrait" />
+=======
+>>>>>>> 3fef1f0... 增加说明
+=======
+
+
+
+
+=======
+>>>>>>> 83765f4... 增加说明
+        <activity
+            android:name=".activity.databinding.ui.Main2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindSimpleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindThoroughActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindObservableActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindSeniorActivity"
+            android:screenOrientation="portrait" />
+<<<<<<< HEAD
+
+<<<<<<< HEAD
+>>>>>>> 6b88e5c... 增加说明
+=======
+=======
+>>>>>>> 83765f4... 增加说明
+        <activity
+            android:name=".activity.databinding.ui.BindTwoWayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindLambdaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.databinding.ui.BindAnimationActivity"
+            android:screenOrientation="portrait" />
+>>>>>>> 9e27b5b... 增加说明
+    </application>
+
+</manifest>

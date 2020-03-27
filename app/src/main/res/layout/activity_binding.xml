@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <!-- 绑定数据  -->
+        <variable
+            name="user"
+            type="imitate.project.activity.databinding.User" />
+
+        <!-- 绑定方法  -->
+        <variable
+            name="handler"
+            type="imitate.project.activity.databinding.BindingActivity.MyHandlers" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".activity.databinding.BindingActivity">
+        <!--     android:text="@={user.name}"
+         携带"=" 为数据的双向绑定   只能用于原生的控件 自身定义控件需要自行实现方法-->
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@={user.name}"
+            android:textColor="@color/cardview_light_background">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@={user.password}"
+            android:textColor="@color/cardview_light_background">
+
+        </EditText>
+
+
+        <EditText
+            android:id="@+id/sex"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@={user.sex}"
+            android:textColor="@color/cardview_light_background">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:digits="0123456789"
+            android:gravity="center"
+<<<<<<< HEAD
+<<<<<<< HEAD
+            android:inputType="number"
+            android:text="@={user.age}"
+            android:textColor="@color/cardview_light_background"></EditText>
+
+
+        <EditText
+            android:id="@+id/age0"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:digits="0123456789"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="@{String.valueOf(user.age0)}"
+            android:textColor="@color/cardview_light_background"></EditText>
+        <!--
+                    android:text="@={user.age}"
+        -->
+=======
+=======
+            android:inputType="number"
+            android:digits="0123456789"
+>>>>>>> 6b88e5c... 增加说明
+            android:text="@={user.age}"
+            android:id="@+id/age">
+        </EditText>
+<<<<<<< HEAD
+>>>>>>> 3fef1f0... 增加说明
+=======
+        <!--
+                    android:text="@={user.age}"
+        -->
+>>>>>>> 6b88e5c... 增加说明
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+<<<<<<< HEAD
+            android:text="单击事件"
+<<<<<<< HEAD
+<<<<<<< HEAD
+            android:onClick="@{handler::onClickView}"
+=======
+            android:onClick="@{handler.onClickView}"
+>>>>>>> 3fef1f0... 增加说明
+=======
+            android:onClick="@{handler::onClickView}"
+>>>>>>> 6b88e5c... 增加说明
+            android:id="@+id/textview"
+           >
+=======
+            android:onClick="@{handler::onClickView}"
+            android:text="单击事件"
+            android:textColor="@color/cardview_light_background">
+>>>>>>> 24c390d... xxxx
+
+        </TextView>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+<<<<<<< HEAD
+<<<<<<< HEAD
+            android:onClick="@{handler::onClickView}"
+=======
+            android:onClick="@{handler.onClickView}"
+>>>>>>> 3fef1f0... 增加说明
+=======
+            android:onClick="@{handler::onClickView}"
+<<<<<<< HEAD
+>>>>>>> 6b88e5c... 增加说明
+            android:id="@+id/button"
+=======
+>>>>>>> 24c390d... xxxx
+            android:text="按钮改变数据">
+
+        </Button>
+    </LinearLayout>
+</layout>

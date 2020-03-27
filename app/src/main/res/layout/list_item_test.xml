@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="employeeInfo"
+            type="imitate.project.activity.databinding.model.EmployeeInfo" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{employeeInfo.avatar}"
+            tools:src="@mipmap/icon_group_conversation_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="@{employeeInfo.name}"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            tools:text="测试数据" />
+    </LinearLayout>
+
+</layout>

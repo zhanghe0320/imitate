@@ -1,0 +1,16 @@
+<resources>
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <string name="app_name">测试</string>
+=======
+    <string name="app_name">我的学习App</string>
+>>>>>>> 9e27b5b... 增加说明
+=======
+    <string name="app_name">测试</string>
+>>>>>>> 83765f4... 增加说明
+    <string name="info">firstName：%1$s  lastName：%2$s</string>
+    <string name="article">标题：%1$s  \n描述：%2$s\n阅读数量：%3$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

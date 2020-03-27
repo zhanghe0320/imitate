@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.databinding.ui.Main2Activity"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDataBindSimple"
+        android:text="入门篇-创建+数据绑定+事件触发" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDataBindThorough"
+        android:text="入门篇-表达式+null检查+include" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDataObservable"
+        android:text="入门篇-observable对象" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDataBindSenior"
+        android:text="高级篇-列表绑定+自定义属性" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDataBindTwoWay"
+        android:text="高级篇-双向绑定+表达式链" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDatBindLambda"
+        android:text="高级篇-Lambda表达式" />
+
+    <TextView
+        style="@style/TextViewStyle"
+        android:onClick="onDatBindAnimation"
+        android:text="高级篇-动画" />
+</LinearLayout>

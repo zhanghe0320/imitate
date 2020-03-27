@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="articleInfo"
+            type="imitate.project.activity.databinding.model.ArticleInfo" />
+
+        <variable
+            name="user"
+            type="imitate.project.activity.databinding.model.ObservableUser" />
+
+        <variable
+            name="onOtherNameClickListener"
+            type="OnClickListener" />
+
+        <variable
+            name="onOtherNameSecondClickListener"
+            type="OnClickListener" />
+
+        <variable
+            name="editPresenter"
+            type="imitate.project.activity.databinding.presenter.EditPresenter" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:afterTextChanged="@{editPresenter::afterTextChanged}"
+                android:background="#cccccc"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text='@{user.firstName+"----->"+user.lastName}' />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{onOtherNameClickListener}"
+                android:text="双向绑定方式一" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="标题：" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="#cccccc"
+                    android:text="@{articleInfo.title}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="描述：" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="#cccccc"
+                    android:text="@{articleInfo.desc}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="阅读数量：" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="#cccccc"
+                    android:text="@{String.valueOf(articleInfo.readCount)}" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_article_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/article(articleInfo.title,articleInfo.desc,articleInfo.readCount)}" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{onOtherNameSecondClickListener}"
+                android:text="双向绑定方式二" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{user.arrayMap["hi"]}' />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{user.arrayMap["wan"]}' />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{user.arrayMap["xiao"]}' />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.list.get(0)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.list.get(1)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.list.get(2)}" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

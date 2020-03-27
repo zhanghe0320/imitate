@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="employeeInfo"
+            type="imitate.project.activity.databinding.model.EmployeeInfo" />
+
+        <variable
+            name="presenter"
+            type="imitate.project.activity.databinding.ui.BindLambdaActivity.Presenter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+        <!--      android:onClick="@{()->presenter.onEmployeeClick(employeeInfo)}"-->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+=======
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->presenter.onEmployeeClick(employeeInfo)}"
+>>>>>>> 9e27b5b... 增加说明
+=======
+        <!--      android:onClick="@{()->presenter.onEmployeeClick(employeeInfo)}"-->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+>>>>>>> 83765f4... 增加说明
+            android:text="onEmployeeClick"
+            android:textAllCaps="false" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v)->presenter.onEmployeeLongClick(employeeInfo,context)}"
+            android:text="onFocusChange"
+            android:textAllCaps="false" />
+    </LinearLayout>
+    <!--android:onFocusChanged="@{(v,fcs)->presenter.onFocusChanged(employeeInfo)}"-->
+</layout>

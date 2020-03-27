@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="imageUrl"
+            type="java.lang.String" />
+
+        <variable
+            name="showImage"
+            type="boolean" />
+
+
+        <variable
+            name="presenter"
+            type="imitate.project.activity.databinding.ui.BindAnimationActivity.Presenter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:visibility="@{showImage?View.VISIBLE:View.GONE}"
+            app:imageUrl="@{imageUrl}" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:onCheckedChanged="@{presenter::onCheckedChanged}"
+            android:layout_height="wrap_content"
+            android:text="显示图片" />
+    </LinearLayout>
+
+    <!--android:onCheckedChanged="{presenter.onCheckChanged}"-->
+</layout>

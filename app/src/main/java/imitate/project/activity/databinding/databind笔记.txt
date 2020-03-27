@@ -1,0 +1,108 @@
+﻿基本用法：
+1.xml文件创建  <layout></layout>
+2.数据绑定(Bind UI) setVariable 、setXXX   
+3.事件触发
+	android:onClick
+	android:onLongClick
+	.....
+    两种绑定方式：1.方法引用，2.Listener 监听
+4.表达式
+5.null检查
+6.include
+7.observable
+	第一种方式：   @Bindable   notifyPropertyChanged
+	第二种方式：	
+8.高级绑定：
+	动态变量
+		holder.getBinding().setVariable(BR.item,item);
+		holder.getBinding().executePendingBindings();
+	刷新
+		立即绑定
+		后台线程
+	bind生成
+		1.默认生成标准		
+		2.自定义类
+高级用法：
+1.列表绑定
+2.自定义属性
+	(1)、app:adapter ...
+	(2)、BindingMethods
+	(3)、BindingAdapter
+	(4)、多属性适配 在BindingAdapter 加属性
+3.双向绑定
+	方式一：Listener
+			   <EditText
+                style="@style/TextViewStyle"
+                android:afterTextChanged="@{editPresenter.afterTextChanged}"
+                android:text="@{employeeInfo.desc}" />
+				
+			mBinding.setEditPresenter(new EditPresenter() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                super.afterTextChanged(s);
+                final String text = s.toString().trim();
+                if (!text.equals(employeeInfo.getDesc().get())) {
+                    employeeInfo.setDesc(text);
+                }
+            }
+        });
+	方式二： @= 表达式
+			  <EditText
+                style="@style/TextViewStyle"
+                android:text="@={employeeInfo.desc}" />
+	双向绑定中注意的一点：
+		对于字段中发生改变可以调用此方法
+			   employeeInfo.getDesc().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                ObservableField<String> field = (ObservableField<String>) observable;
+                LogUtils.getInstance().logE("field : " + field.get() + "  i : " + i);
+            }
+        });
+4.表达式链
+	重复的表达式：
+		简化表达式：
+		  <ImageView
+                android:id="@+id/avatar2"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:scaleType="centerCrop"
+                android:visibility="@{employeeInfo.isFired?View.VISIBLE:View.GONE}"
+                app:imageUrl="@{employeeInfo.avatar}" />
+				
+		  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{avatar2.visibility}">
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="员工名字：" />
+
+            <EditText
+                style="@style/TextViewStyle"
+                android:afterTextChanged="@{editPresenter.afterTextChanged}"
+                android:text="@{employeeInfo.name}" />
+        </LinearLayout>		
+		隐式更新：
+5.Lambda表达式
+	方法引用的替代者,用法：
+		android:onClick="@{(view)->presener.save(view,item)}"
+ 	省略参数，或申明所有参数（通常不需要view）
+		android:onFocusChange="@{(v,fcs)->presenter.refresh(item)}"
+	Lambda中可以使用表达式，引用变量
+	特殊变量：view  id
+	包括context变量
+6.动画
+	简单/自动（Transition）
+	mBinding.addOnRebindCallback(new OnRebindCallback() {
+            @Override
+            public boolean onPreBind(ViewDataBinding binding) {
+                //动画操作
+                ViewGroup sceneRoot = (ViewGroup) binding.getRoot();
+                TransitionManager.beginDelayedTransition(sceneRoot);
+                return true;
+            }
+        });
+		

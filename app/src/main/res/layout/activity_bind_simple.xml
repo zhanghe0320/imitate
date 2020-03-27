@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <!-- 对象-->
+        <variable
+            name="user"
+            type="imitate.project.activity.databinding.model.UserInfo" />
+
+        <!-- 三种实现点击事件的方法-->
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="simpleHandler"
+            type="imitate.project.activity.databinding.references.SimpleHandler" />
+
+        <variable
+            name="simplePresenter"
+            type="imitate.project.activity.databinding.presenter.SimplePresenter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- 用户名-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="用户名：" />
+
+            <EditText
+                style="@style/TextViewStyle"
+                android:text="@{user.userName}" />
+        </LinearLayout>
+
+        <!-- 手机号-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextLabelStyle"
+                android:text="手机号：" />
+
+            <EditText
+                style="@style/TextViewStyle"
+                android:text="@{user.mobile}" />
+        </LinearLayout>
+
+        <Button
+            style="@style/ButtonStyle"
+            android:onClick="@{() ->simplePresenter.onSaveClick(user)}"
+            android:text="登录" />
+
+
+        <Button
+            style="@style/ButtonStyle"
+            android:onClick="@{simpleHandler::onClickFriend}"
+            android:text="注册" />
+
+        <Button
+            style="@style/ButtonStyle"
+            android:onClick="@{onClickListener}"
+            android:text="点我" />
+    </LinearLayout>
+</layout>

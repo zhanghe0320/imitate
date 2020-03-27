@@ -1,0 +1,691 @@
+本APP 主要用于学习使用
+采用mvp 的方式进行实现 , retrofit2 okhttp3 rxjava2 greendao
+
+
+
+关于自适应界面
+使用的是今日头条的自适应方案     注意导入autosize
+在setting.gradle内导入，
+   在BaseActivity内统一实现 CustomAdapt，
+   重新方法isBaseOnWidth()  与getSizeInDp()
+   根据设计图UI进行设置，了保证在高宽比不同的屏幕上也能正常适配, 所以只能在宽度和高度之中选择一个作为基准进行适配，
+   当按照宽度进行适配的时候：
+   isBaseOnWidth() 返回参数为true ;  getSizeInDp()中设置返回数据为设计图的总宽度
+   当按照高度进行适配的时候：
+   isBaseOnWidth() 返回参数为false ;  getSizeInDp()中设置返回数据为设计图的总高度
+   换算比列请自行百度。
+
+
+请注意一下几点
+1.项目的各种jar包的版本统一配置文件
+需要在imitate/  主目录下，比如设置配置文件名称为 versions.gradle
+此时需要在 imitate/  主目录下 build.gradle 进行引入 配置文件==》  在顶部设置好引入的配置文件
+        apply from: 'versions.gradle'  //导入配置文件信息 配置文件的信息初始化  配置文件名称信息
+
+配置文件信息也可以直接写在 build.gradle 中，直接进行引入
+如
+   //配置文件信息  可以在此处设置
+
+请注意一下几点
+1.项目的各种jar包的版本统一配置文件
+需要在imitate/  主目录下，比如设置配置文件名称为 versions.gradle
+此时需要在 imitate/  主目录下 build.gradle 进行引入 配置文件==》  在顶部设置好引入的配置文件
+        apply from: 'versions.gradle'  //导入配置文件信息 配置文件的信息初始化  配置文件名称信息
+
+配置文件信息也可以直接写在 build.gradle 中，直接进行引入
+如
+
+   //配置文件信息  可以在此处设置
+   ext {
+       minSdkVersion = 14
+       targetSdkVersion = 29
+       compileSdkVersion = 29
+       buildToolsVersion = "29.0.2"
+       versionCode = 40
+       versionName = "1.2.0"
+       appcompat_v7 = "com.android.support:appcompat-v7:28.0.0"
+       androidx_appcompat = "androidx.appcompat:appcompat:1.1.0"
+   }
+
+
+此处如果需要配置greendao 需要添加支持
+在build.gradle 中添加
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'            // add plugin   添加 plugin   项目的build.gradle 的apply 引入
+
+添加maven
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'  //maven
+如果报错 添加
+        classpath 'com.novoda:bintray-release:0.9.2'                      //上传魔窟开处理
+
+
+
+在build.gradle 中添加
+        allprojects {
+            repositories {
+                google()       //
+                jcenter()      //
+                mavenCentral() // add repository
+
+            }
+        }
+
+
+此处使用greendao 需要设置以下信息
+
+             在最上面 引入
+             apply plugin: 'org.greenrobot.greendao' // greendao 配置信息
+             单独配置greendao
+
+             greendao {
+                 schemaVersion 1                                //数据库版本号
+                 daoPackage 'imitate.project.greendao.greendao' // 设置DaoMaster、DaoSession、Dao   一般包名+文件夹名
+                 targetGenDir 'src/main/java'                   //设置DaoMaster、DaoSession、Dao目录   文件生成的目录，相当于父级目录
+             }
+
+            如需要数据库升级，请查看imitate.project.greendao.greendao.utils  包下的相关代码，里面包含升级方法~~
+
+
+
+2.imitate/  主目录下的gradle.properties 添加
+    android.useAndroidX=true
+    android.enableJetifier=true
+    此处是更改为google 的官方指定androidx 支持信息  设置为false 或者进行删除  则为不支持
+3.imitate/app  主目录下 build.gradle 中
+        当引用的jar方法过多的时候  请引入
+         //添加支持  方法超过64 个的限制
+         implementation 'com.android.support:multidex:1.0.1'
+      并在build.gradle 的 自行添加支持
+      defaultConfig {
+      ...
+      multiDexEnabled true// 方法超过64个的时候需要添加的配置信息
+      }
+      还需要自定义application， 并在application 初始化   自定义的application 继承自 MultiDexApplication
+      重写方法
+            @Override
+            protected void attachBaseContext(android.content.Context base) {  //或者使用这种方法解决引用方法限制的问题
+                super.attachBaseContext(base);
+                   MultiDex.install(this);
+            }
+
+
+
+    此处使用greendao 需要设置以下信息
+     在最上面 引入
+     apply plugin: 'org.greenrobot.greendao' // greendao 配置信息
+     单独配置greendao
+     greendao {
+         schemaVersion 1                                //数据库版本号
+         daoPackage 'imitate.project.greendao.greendao' // 设置DaoMaster、DaoSession、Dao   一般包名+文件夹名
+         targetGenDir 'src/main/java'                   //设置DaoMaster、DaoSession、Dao目录   文件生成的目录，相当于父级目录
+     }
+    如需要数据库升级，请查看imitate.project.greendao.greendao.utils  包下的相关代码，里面包含升级方法~~
+
+
+4.mvp 代码逻辑基本信息
+ BasePresenter 为网络请求 通用，大部分小公司可能不会设置统用数据  都是直接使用，没有统一的格式
+ BaseObserver  为基本逻辑处理，根据返回结果，进行相应的处理
+ BaseModel     为基础数据，此处数据为获取到返回数据。一般包含请求失败码数据，基本信息，结果数据等，一般获取基本错误码后，判别信息在处理
+ BaseView      为基本显示，基本的信息显示封装，比如错误信息，失败信息的view封装
+重申一下，如果公司后台可以提供统一的数据格式最好，不能统一可以自己进行对应的修改，
+
+ 每个activity 实现自己对应的view 以及继承 自己的 Presenter
+ 每个activity 包含自己的view接口文件  实现自己相对应的View，此处是对本身activity  UI进行个性化的更新
+ 在继承的view 文件中增加自定义的方法，比如除了基本的错误View外，自定义的数据处理，获取网络数据后自己进行UI更新
+ 每个activity 相对应有自己的Presenter 继承自BasePresenter，此处是进行请求处理，网络去请求数据
+ 内部添加自定义的一部分处理方法
+
+基本方式  是在activity 中进行网络请求，网络请求调用Api中自定义的请求方法，
+          请求方法中获取网络数据，返回相对应的View数据信息，
+          此时调用自定义的view 的接口进行处理，view当中包含基本的View，如果返回成功，进入自定义View,失败，直接提示失败
+          activity 中包含自定的view 实现，实现里进行更新前端UI的操作，
+
+ 4.部分补充
+ 控制台出现如下错误：CLEARTEXT communication to xxxx not permitted by network security policy
+     google 在android p  android 9.0 以候禁止了非https 访问  需要自行设置打开非https 访问属性
+     需要在layout 同级目录下自 自定义xml 文件夹，文件夹内 自定义文件 network_config.xml   文件添加内容为
+     <?xml version="1.0" encoding="utf-8"?>
+     <network-security-config>
+         <base-config cleartextTrafficPermitted="true" />
+     </network-security-config>
+
+     随后在AndroidManifest 的appliaction 下添加支持
+     android:networkSecurityConfig="@xml/network_config"
+
+
+
+
+5.greendao 具体注解使用
+    @Entity(
+            // 告知GreenDao当前实体属于哪个schema (pick any string as a name).
+            schema = "myschema",
+            // 标记一个实体处于活动状态，活动实体有更新、删除和刷新方法
+            active = true,
+            // 指定该表在数据库中的名称，默认是基于实体类名
+            nameInDb = "AWESOME_USERS",
+            // 定义跨多个列的索引
+            indexes = {
+                    @Index(value = "name DESC", unique = true)
+            },
+            // 标识DAO类是否应该创建该数据库表(默认为true)
+            // 如果有多个实体映射一个表，或者该表已在greenDAO外部创建，则置为false
+            createInDb = false,
+            // 是否生成all-properties的构造器
+            // 无参构造器总是会生成
+            generateConstructors = true,
+            // 如果丢失，是否应该生成属性的getter和setter
+            generateGettersSetters = true
+    )
+
+    基础注解信息
+    @Id
+    主键，选择使用long或Long，可以通过@Id(autoincrement = true)设置自增长，引用一下官方文档的说明
+    @Id
+    private Long id;
+
+    @Index(unique = true)
+    private String key;
+
+    @Property
+    为该属性映射的列设置一个非默认的名称，默认是将单词大写，用下划线分割单词，如属性名customName对应列名CUSTOM_NAME
+        @Property(nameInDb = "USERNAME")
+        private String name;
+
+    @NotNull
+    表明这个列非空，通常使用@NotNull标记基本类型(long,int,short,byte)，然而可使用包装类型(Long, Integer, Short, Byte)使其可空
+        @NotNull
+        private int repos;
+
+    @Transient
+    表明此字段不存储到数据库中，用于不需要持久化的字段，比如临时状态
+        @Transient
+        private int tempUsageCount;
+
+
+    索引注解
+    @Index
+    为相应的列创建索引
+    name 如果不想使用greenDAO为该属性生成的默认索引名称，可通过name设置
+    unique 给索引添加唯一性约束
+        @Index(unique = true)
+        private String name;
+
+    @Unique
+    为相应列添加唯一约束，注意，SQLite会隐式地为该列创建索引
+        @Unique private String name;
+
+    关系注解
+    在greenDAO，实体使用@to-one 或 @to-many 关联起来
+    @ToOne 一对一
+    实体类order
+    @Entity
+    public class Order {
+        @Id private Long id;                   //ID
+
+        private long customerId;              //定义外键
+
+        @ToOne(joinProperty = "customerId")   //一个Order对一个Customer，joinProperty指定外键
+        private Customer customer;           //持有目标实体对象的字段
+    }
+
+    实体类customer
+    @Entity
+    public class Customer {
+        @Id private Long id;
+    }
+
+
+    外键约束语句：
+    constraint FK_name foreign key(customerId) references Customer(id);
+    @ToOne 定义到另一个实体对象的关系，应在持有目标实体对象的字段上使用该注解。
+    如一个Order对一个Customer，应在实体Order的customer字段使用@ToOne
+
+    在实体内部，需要定义一个属性来指向目标实体的ID，也就是定义外键（如Order实体的customerId），
+    使用@ToOne的joinProperty参数来指明外键
+
+    如果改变了外键属性（customerId），下次调用getter(getCustomer())时会更新实体；如果设置了新的实体(setCustomer()),外键也会更新
+
+    第一次调用to-one关系的getter方法(getCustomer())时会延迟加载，在随后的调用会立即返回之前加载的对象。
+
+    @ToMany 一对多
+    @ToMany定义一对多关系(一对一个其他实体的集合)，使用@ToMany的属性代表目标实体的List，集合里的对象都必须至少有一个属性指向拥有@ToMany的实体
+
+    referencedJoinProperty指定目标实体的外键
+    @Entity
+    public class Customer {
+        @Id private Long id;
+
+        @ToMany(referencedJoinProperty = "customerId") //指定目标实体的外键
+
+        @OrderBy("date ASC")
+        private List<Order> orders; //目标实体的List
+    }
+
+    @Entity
+    public class Order {
+        @Id private Long id;
+        private Date date;
+        private long customerId;
+    }
+    joinProperties parameter
+    对于更复杂的关系，可以指定一个@joinproperty注释列表，每个@joinproperty需要原始实体中的源属性和目标实体中的引用属性。
+
+    @Entity
+    public class Customer {
+        @Id private Long id;
+        @Unique private String tag;
+
+        @ToMany(joinProperties = {
+                @JoinProperty(name = "tag", referencedName = "customerTag")
+        })
+        @OrderBy("date ASC")
+        private List<Site> orders;
+    }
+
+    @Entity
+    public class Order {
+        @Id private Long id;
+        private Date date;
+        @NotNull private String customerTag;
+    }
+    @JoinEntity 多对多
+    如果两个实体是多对多的关系，那么需要第三张表（表示两个实体关系的表）
+    例如学生与课程是多对多关系，需要一个选课表来转成两个一对多的关系（学生与选课是一对多，课程与选课是一对多）
+
+    @Entity
+    public class Product {
+        @Id private Long id;
+
+        @ToMany
+        @JoinEntity(
+                entity = JoinProductsWithOrders.class,
+                sourceProperty = "productId",
+                targetProperty = "orderId"
+        )
+        private List<Order> ordersWithThisProduct;
+    }
+
+    @Entity
+    public class JoinProductsWithOrders {
+        @Id private Long id;
+        private Long productId;
+        private Long orderId;
+    }
+
+    @Entity
+    public class Order {
+        @Id private Long id;
+    }
+    获取和更新To-many关系
+    To-many在首次请求时会延迟加载，之后，相关的实体缓存到源实体的内部List对象中。随后的访问不再查询数据库，而是直接从缓存中获取。所以当数据库更新to-many关系后，需要手动更新to-many的list缓存。
+
+    // 插入新的实体之前获取to-many list，否则新实体可能在list中出现两次
+    List<Order> orders = customer.getOrders();
+    // 创建新实体
+    Order newOrder = ...
+    // 设置外键
+    newOrder.setCustomerId(customer.getId());
+    // 插入新实体
+    daoSession.insert(newOrder);
+    // 添加新实体到to-many list
+    orders.add(newOrder);
+    同样，可以删掉关联的实体
+
+    List<Order> orders = customer.getOrders();
+    // 从数据库中删掉其中一个关联的实体
+    daoSession.delete(someOrder);
+    // 手动从to-many list中删除
+    orders.remove(someOrder);
+    当添加、更新或删除很多关联实体时可以使用reset方法来清掉缓存，然后调用getter方法时会重新查询
+
+    // clear any cached list of related orders
+    customer.resetOrders();
+    List<Order> orders = customer.getOrders();
+
+
+6.ButterKnife 具体注解使用
+
+    @Bind
+    TextView mTextView//最常用的注解，用来绑定View，避免findViewById，也可以用在ViewHolder里，必须是public
+
+    @Bind({ R.id.first_name, R.id.middle_name, R.id.last_name })
+    List<EditText> nameViews//绑定多个view，只能用List不能用ArrayList
+
+    @OnClick(R.id.submit) //  @OnClick(R.id.first_name, R.id.middle_name, R.id.last_name)//绑定多个
+    public void submit(View view) {...}//绑定点击事件，支持多个id绑定同一个方法   多个的时候内部使用switch  处理
+
+    @OnItemSelected(R.id.list_view)
+    void onItemSelected(int position) {...}//selected事件
+
+    @OnItemClick(R.id.example_list)
+    void onItemClick(int position) {...}//itemClick事件
+
+    @OnFocusChange(R.id.example)
+    void onFocusChanged(boolean focused){...}//焦点改变监听
+
+    @OnItemLongClick(R.id.example_list)
+    boolean onItemLongClick(int position){...}//长按监听
+
+    @OnPageChange(R.id.example_pager)
+    void onPageSelected(int position){...}//Viewpager切换监听
+
+    @OnTextChanged(R.id.example)
+    void onTextChanged(CharSequence text)//内容改变监听
+
+    @BindInt//用来绑定Integer类型的resource ID
+    @BindString//用来绑定string.xml里的字符串
+    @BindDrawable//用来绑定图片
+    @BindColor//用来绑定颜色
+    @BindDimen//用来绑定dimens
+7. Retrofit2中常用的注解
+请求方法类注解
+    @GET
+    GET网络请求方式,通常后面括号要子接口地址
+    例如提交一个无参数的get请求:
+    //接口:http://www.weather.com.cn/data/sk/101010100.html
+    @GET("data/sk/101010100.html")
+    Call <Weather> getWeather();
+
+        GET	    对应HTTP中的GET请求
+        POST	POST请求
+        PUT	    PUT请求
+        DELETE	DELETE请求
+        PATCH	PATCH请求
+        HEAD	HEAD请求
+        OPTIONS	OPTIONS请求
+        HTTP	用于替代以上方法，自定义HTTP请求
+
+    Get注解示例
+    interface WordService {
+     @GET("query")
+     fun getWord(@Query("word") word: String, @Query("dtype") dtype: String,@Query("key") key: String): Observable<WordData>
+    }
+
+    @HTTP  注解示例
+    interface WordService {
+     @HTTP(method = "GET",path = "query",hasBody = false)
+     fun getWord(@Query("word") word: String, @Query("dtype") dtype: String,@Query("key") key: String): Observable<WordData>
+    }
+
+
+    标记注解（共3个）
+        FormUrlEncoded	请求体是From表单
+        Multipart	    请求体是流
+        Streaming	    直接返回值，不写入内存
+
+        FormUrlEncoded
+         Field或FieldMap提交数据，不使用FormUrlEncoded会报错
+        使用了FormUrlEncoded之后会改变编码格式为：“Content-Type: application/x-www-form-urlencoded”
+        如下：
+         @FormUrlEncoded
+         @POST("query")
+         fun getWord(@Field("word") word: String, @Field("dtype") dtype: String, @Field("key") key: String): Observable<WordData>
+        Multipart
+         上传文件需要使用到Multipart，使用之后会将编码格式改为：“Content-Type: multipart/form-data”
+         如下
+             @Multipart
+             @POST("query")
+             fun getWord(@PartMap params: Map<String, String>): Observable<ResponseBody>
+         调用
+               var retrofit = Retrofit.Builder()
+                           .baseUrl("http://v.juhe.cn/xhzd/")
+                           .addConverterFactory(GsonConverterFactory.create())
+                           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                           .client(okHttpClient)
+                           .build()
+                var wordService = retrofit.create(WordService::class.java)
+                var map = mapOf("word" to "你","json" to "", "key" to "c5c6a09be5cdb204735da11f")
+                wordService.getWord(map)
+
+        Streaming
+         如果下载小文件可以不使用Streaming。下载大文件使用Streaming可以避免Retrofit将文件写入运行内存中避免OOM。
+
+
+
+    请求头注解（1个）
+    Headers	添加请求头
+     请求头不会相互覆盖，所有具有相同名字的头会包含在请求中。
+     @Headers("Cache-Control: max-age=640000", "User-Agent: YourAppName")
+    如下
+     @Headers("Cache-Control: max-age=640000", "User-Agent: YourAppName")
+     @GET("query")
+     fun getWord(@Query("word") word: String, @Query("dtype") dtype: String,@Query("key") key: String): Call<WordData>
+
+
+     参数注解（12个）
+     Body	        直接控制Body
+     Field	        添加一个表单数据
+     FieldMap	    添加多个表单数据
+     Header	        添加一个请求头
+     HeaderMap	    添加多个请求头
+     Query	        动态拼接一个参数到URL后
+     QueryMap	    动态拼接多个参数到URL后
+     QueryName	    动态拼接无值参数到URL后
+     Path	        替换相应位置参数
+     Url	        直接传入URL
+     Part	        表示multi-part一个参数
+     PartMap	    表示multi-part多个参数
+
+     Body
+      当你想直接控制POST/PUT的Body时（替代参数或表单样式发送Body），可以直接使用该注释。
+     如下
+       @POST("query")
+       fun getWord(@Body body: RequestBody): Observable<WordData>
+     调用
+       var retrofit = Retrofit.Builder()
+                  .baseUrl("http://v.juhe.cn/xhzd/")
+                  .addConverterFactory(GsonConverterFactory.create())
+                  .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                  .build()
+       var wordService = retrofit.create(WordService::class.java)
+       val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "this is body")
+       wordService.getWord(body)
+
+   Field / FieldMap
+      表单上传数据，Field是上传单个数据，FieldMap是上传多个数据。并且需要使用@FormUrlEncoded修饰请求方法，否则报错。
+    Field如下
+         @FormUrlEncoded
+         @POST("query")
+         fun getWord(@Field("word") word: String, @Field("dtype") dtype: String, @Field("key") key: String): Observable<WordData>
+    FieldMap 如下
+         var map = mapOf("word" to "你","key" to "c5c6a09be5cdb2")
+         var retrofit = Retrofit.Builder()
+                    .baseUrl("http://v.juhe.cn/xhzd/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+
+         var wordService = retrofit.create(WordService::class.java)
+         wordService.getWord(map)
+         接口
+          @FormUrlEncoded
+          @POST("query")
+          fun getWord(@FieldMap() map: Map<String,String>): Observable<WordData>
+
+
+     Header / HeaderMap
+      添加请求体，Header是添加单个请求头，HeaderMap添加多个请求头。请求头不会相互覆盖，所有具有相同名字的头会包含在请求中。
+       Header代码如下所示
+         @GET("query")
+         fun getWord(@Header("User-Agent") name: String, @Query("word") word: String): Observable<WordData>
+       HeaderMap代码如下所示：
+         var map = mapOf("Cache-Control" to "max-age=640000","User-Agent" to "YourAppName")
+         var retrofit = Retrofit.Builder()
+                    .baseUrl("http://v.juhe.cn/xhzd/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+
+         var wordService = retrofit.create(WordService::class.java)
+         wordService.getWord(map,"你")
+
+         接口
+         @GET("query")
+          fun getWord(@HeaderMap() name: Map<String,String>, @Query("word") word: String):  Observable<WordData>
+
+     Query / QueryMap / QueryName
+      动态添加参数到URL
+     Query
+         //接口
+          @GET("query")
+          fun getWord(@Query("word") word: String, @Query("dtype") dtype: String,@Query("key") key: String): Observable<WordData>
+        调用
+         var retrofit = Retrofit.Builder()
+                    .baseUrl("http://v.juhe.cn/xhzd/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+
+         var wordService = retrofit.create(WordService::class.java)
+         wordService.getWord("word","json","c5c6a09be5cdb2")
+
+         使用了Query之后，URL会拼接成： http://v.juhe.cn/xhzd/query?word=word&dtype=json&key=c5c6a09be5cdb2
+
+
+        QueryMap
+         以下是GET请求示例代码：
+
+         @GET("query")
+         fun getWord(@QueryMap() map: Map<String,String>): Observable<WordData>
+         var wordService = retrofit.create(WordService::class.java)
+         var map = mapOf("word" to "你","key" to "c5c6a09be5cdb20473")
+         wordService.getWord(map)
+
+         也可以在POST中使用Query或QueryMap，同样是将参数拼接到URL后。
+        QueryName
+         动态添加参数到没有值的Url后面，示例代码如下所示：
+
+         @GET("query")
+         fun getWord(@QueryName filter: String): Observable<WordData>
+
+     Path
+      替换URL中相对应的路径。  路径为("users/{user}/repos")  使用(@Path("user") user: String)  会替换user参数
+         替换URL中相对应的路径。
+         示例代码如下所示：
+
+         @GET("users/{user}/repos")
+         fun listRepos(@Path("user") user: String): Call<List<Repo>>
+         var retrofit = Retrofit.Builder()
+                    .baseUrl("https://api.github.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+         val service = retrofit.create(WordService::class.java)
+         service.listRepos("octocat")
+         传递进来的参数会替换掉"users/{user}/repos"中的user部分，如下所示：
+
+         https://api.github.com/users/octocat/repos
+
+
+    Url
+     直接传入Url，代码如下所示：
+
+     @GET()
+     fun getWord(@Url url: String): Observable<WordData>
+
+
+     Part / PartMap
+      Part表示一个multi-part请求，PartMap表示多个PartMap请求。使用这两个参数需要在接口方法使用Multipart注解。
+     Part
+      存在该注解的参数，有以下三种处理方式：
+
+     @Multipart
+      @POST("query")
+      fun getWord(@Part("name") filter: String): Observable<WordData>
+
+      @Multipart
+      @POST("query")
+      fun getWord(@Part() body: MultipartBody.Part): Observable<WordData>
+
+      @Multipart
+      @POST("query")
+      fun getWord(@Part("name") body: MultipartBody): Observable<WordData>
+
+
+       MultipartBody.Part上传文件
+       var file = File("/sdcard/Pictures/transitions_diagram.png")
+       var requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+       var multipartBodyPart = MultipartBody.Part.createFormData("SDFile", file.name, requestFile)
+
+       MultipartBody上传文件
+        var file = File("/sdcard/Pictures/transitions_diagram.png")
+        var requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        var multipartBodyPart = MultipartBody.Part.createFormData("SDFile", file.name, requestFile)
+        var multipartBody = MultipartBody.Builder().addPart(multipartBodyPart).build()
+
+
+        PartMap
+         如果参数是RequestBody可以直接使用，如果是map，则需要转换成相应的类型使用，示例代码如下所示：
+
+         @Multipart
+         @POST("/upload")
+         fun upload(@Part("file") file: RequestBody, @PartMap params: Map<String, RequestBody>): Call<ResponseBody>
+
+
+
+
+8. 添加  DataBinding
+首先 在 项目配置文件中  android 下添加 DataBinding 支持
+
+    //databinding 添加数据绑定支持
+    dataBinding {
+        enabled true
+    }
+
+
+8. 添加  DataBinding
+首先 在 项目配置文件中  android 下添加 DataBinding 支持
+
+    //databinding 添加数据绑定支持
+    dataBinding {
+        enabled true
+    }
+
+
+    重新创建activity
+    activity.xml 文件内部 引入数据源，以及方法
+
+    如
+    <data>
+            <!-- 绑定数据  -->
+            <variable
+                name="user"
+                type="imitate.project.activity.databinding.User"/>
+            <!-- 绑定方法  -->
+            <variable
+                name="handler"
+                type="imitate.project.activity.databinding.BindingActivity.MyHandlers"/>
+    </data>
+
+
+   如果需要双向数据绑定  请添加"=" 此处只支持原生的控件，如果为自定义控件 需要进行修改
+        <!--     android:text="@={user.name}"
+         携带"=" 为数据的双向绑定   只能用于原生的控件 自身定义控件需要自行实现方法-->
+
+         在activity 中 添加支持
+          ActivityBindingBinding activityBindingBinding = DataBindingUtil.setContentView(this,R.layout.activity_binding);
+
+          绑定
+           activityBindingBinding.setUser(user);//绑定数据
+           activityBindingBinding.setHandler(new MyHandlers());//绑定事件
+
+          添加事件处理方法
+             public class MyHandlers {
+                    public void onClickView(View view){
+                        switch (view.getId()){
+                            case R.id.textview:
+                                Toast.makeText(view.getContext(), "textview绑定事件成功", Toast.LENGTH_SHORT).show();
+                                Log.i(TAG, "onClickView:"+user.toString());
+                                break;
+                            case R.id.button:
+                                Toast.makeText(view.getContext(), "button绑定事件成功", Toast.LENGTH_SHORT).show();
+                                Log.i(TAG, "onClickView:"+user.toString());
+                                break;
+                        }
+                    };
+                }
+
+
+
+
+未完待续。。。。
+
